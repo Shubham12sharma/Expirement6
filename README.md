@@ -8,7 +8,37 @@ To demonstrate mutual exclusion using a simple Java program.
 
 🔹 Theory (Short & Exam-Oriented)
 
-Mutual exclusion is a fundamental concept in concurrent programming where multiple processes/threads share a common resource. It ensures that only one process enters the critical section at a time, preventing data inconsistency and race conditions.
+Mutual exclusion is a key concept in concurrent and distributed systems that ensures that only one process or thread can access a shared resource (critical section) at any given time. This is necessary to prevent race conditions, where multiple threads try to modify shared data simultaneously, leading to incorrect results.
+
+🔸 Critical Section Problem
+
+A program is divided into:
+
+Entry Section – Code to request access
+Critical Section – Shared resource access
+Exit Section – Release resource
+Remainder Section – बाकी code
+🔸 Requirements of Mutual Exclusion
+
+For a correct solution, three conditions must be satisfied:
+
+Mutual Exclusion
+Only one process can be in the critical section at a time.
+Progress
+If no process is in the critical section, one of the waiting processes should be allowed to enter.
+Bounded Waiting
+A process should not wait indefinitely (no starvation).
+🔸 Methods to Achieve Mutual Exclusion
+Software Solutions
+Peterson’s Algorithm
+Dekker’s Algorithm
+Hardware Solutions
+Test-and-Set instruction
+Compare-and-Swap
+High-Level Language Support (Java)
+synchronized keyword
+Locks (ReentrantLock)
+Semaphores
 
 In Java, mutual exclusion can be achieved using:
 
