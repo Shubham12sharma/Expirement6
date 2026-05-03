@@ -1,94 +1,92 @@
+Experiment No. 2
 Title
 
-Mutual Exclusion Algorithm using Java
+Data Collection from Social Media Platforms using Web Scraping
 
-🔹 Aim
+Aim
 
-To demonstrate mutual exclusion using a simple Java program.
+To collect data from a website using web scraping, crawling, and parsing with Python.
 
-🔹 Theory (Short & Exam-Oriented)
+Theory (Short)
 
-Mutual exclusion is a key concept in concurrent and distributed systems that ensures that only one process or thread can access a shared resource (critical section) at any given time. This is necessary to prevent race conditions, where multiple threads try to modify shared data simultaneously, leading to incorrect results.
+Social Media Analytics involves collecting and analyzing data like posts, comments, and reviews to gain business insights.
 
-🔸 Critical Section Problem
+Web Scraping: Extracting data from websites automatically
+Crawling: Navigating multiple pages using links
+Parsing: Converting HTML into structured format (DOM)
 
-A program is divided into:
+Tools Used:
 
-Entry Section – Code to request access
-Critical Section – Shared resource access
-Exit Section – Release resource
-Remainder Section – बाकी code
-🔸 Requirements of Mutual Exclusion
-
-For a correct solution, three conditions must be satisfied:
-
-Mutual Exclusion
-Only one process can be in the critical section at a time.
-Progress
-If no process is in the critical section, one of the waiting processes should be allowed to enter.
-Bounded Waiting
-A process should not wait indefinitely (no starvation).
-🔸 Methods to Achieve Mutual Exclusion
-Software Solutions
-Peterson’s Algorithm
-Dekker’s Algorithm
-Hardware Solutions
-Test-and-Set instruction
-Compare-and-Swap
-High-Level Language Support (Java)
-synchronized keyword
-Locks (ReentrantLock)
-Semaphores
-
-In Java, mutual exclusion can be achieved using:
-
-synchronized keyword
-Locks (like ReentrantLock)
-
-In this program, we use the synchronized method, which allows only one thread to execute the critical section at a time.
+requests → to fetch webpage
+BeautifulSoup → to parse HTML
 
 
-class SharedResource {
-    public synchronized void printNumbers(String threadName) {
-        for (int i = 1; i <= 5; i++) {
-            System.out.println(threadName + " -> " + i);
-            try {
-                Thread.sleep(500); // simulate work
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-}
-
-class MyThread extends Thread {
-    SharedResource resource;
-
-    MyThread(SharedResource resource) {
-        this.resource = resource;
-    }
-
-    public void run() {
-        resource.printNumbers(Thread.currentThread().getName());
-    }
-}
-
-public class Main {
-    public static void main(String[] args) {
-        SharedResource resource = new SharedResource();
-
-        MyThread t1 = new MyThread(resource);
-        MyThread t2 = new MyThread(resource);
-
-        t1.setName("Thread-1");
-        t2.setName("Thread-2");
-
-        t1.start();
-        t2.start();
-    }
-}
 
 
-🔹 Conclusion
+import requests
+from bs4 import BeautifulSoup
 
-The program demonstrates mutual exclusion using the synchronized method, ensuring that only one thread accesses the shared resource at a time, avoiding race conditions.
+# Step 1: Connect to website
+url = "https://quotes.toscrape.com"
+response = requests.get(url)
+
+# Step 2: Check status
+if response.status_code == 200:
+    print("Connected Successfully\n")
+
+    # Step 3: Parse HTML
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # Step 4: Extract data
+    quotes = soup.find_all("span", class_="text")
+    authors = soup.find_all("small", class_="author")
+
+    # Step 5: Display data
+    for i in range(len(quotes)):
+        print("Quote:", quotes[i].text)
+        print("Author:", authors[i].text)
+        print("-" * 40)
+
+else:
+    print("Failed to connect")
+
+
+import requests
+from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+
+# Fetch data
+url = "https://quotes.toscrape.com"
+response = requests.get(url)
+soup = BeautifulSoup(response.text, "html.parser")
+
+# Extract authors
+authors = soup.find_all("small", class_="author")
+
+author_list = [author.text for author in authors]
+
+# Count frequency
+author_count = {}
+for author in author_list:
+    author_count[author] = author_count.get(author, 0) + 1
+
+# Prepare data
+names = list(author_count.keys())
+counts = list(author_count.values())
+
+# Plot graph
+plt.figure()
+plt.bar(names, counts)
+
+plt.title("Quotes per Author")
+plt.xlabel("Authors")
+plt.ylabel("Number of Quotes")
+
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.show()
+
+Conclusion (Short)
+
+Data was successfully collected using web scraping. The requests library fetched the webpage and BeautifulSoup parsed and extracted useful information. This method is useful in social media analytics for sentiment analysis and trend detection.
