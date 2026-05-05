@@ -1,92 +1,64 @@
-Experiment No. 2
 Title
 
-Data Collection from Social Media Platforms using Web Scraping
+Implementation of Mc-Culloch Pitts Neuron Model for Binary Logic Functions
 
 Aim
 
-To collect data from a website using web scraping, crawling, and parsing with Python.
+To implement the Mc-Culloch Pitts neuron model to simulate basic binary logic functions like AND, OR, and NOT.
 
 Theory (Short)
 
-Social Media Analytics involves collecting and analyzing data like posts, comments, and reviews to gain business insights.
+The Mc-Culloch Pitts (MCP) neuron is the simplest mathematical model of a biological neuron. It works on binary inputs (0 or 1) and produces a binary output.
 
-Web Scraping: Extracting data from websites automatically
-Crawling: Navigating multiple pages using links
-Parsing: Converting HTML into structured format (DOM)
+Each input has a weight
+A threshold (θ) is defined
 
-Tools Used:
+The neuron computes:
 
-requests → to fetch webpage
-BeautifulSoup → to parse HTML
+y={1,
+   0,    if ∑(wixi)≥θ
+            otherwise
+	​
 
-
-
-
-import requests
-from bs4 import BeautifulSoup
-
-# Step 1: Connect to website
-url = "https://quotes.toscrape.com"
-response = requests.get(url)
-
-# Step 2: Check status
-if response.status_code == 200:
-    print("Connected Successfully\n")
-
-    # Step 3: Parse HTML
-    soup = BeautifulSoup(response.text, "html.parser")
-
-    # Step 4: Extract data
-    quotes = soup.find_all("span", class_="text")
-    authors = soup.find_all("small", class_="author")
-
-    # Step 5: Display data
-    for i in range(len(quotes)):
-        print("Quote:", quotes[i].text)
-        print("Author:", authors[i].text)
-        print("-" * 40)
-
-else:
-    print("Failed to connect")
+It is used to implement logic gates:
+AND gate
+OR gate
+NOT gate
 
 
-import requests
-from bs4 import BeautifulSoup
-import matplotlib.pyplot as plt
 
-# Fetch data
-url = "https://quotes.toscrape.com"
-response = requests.get(url)
-soup = BeautifulSoup(response.text, "html.parser")
+code :
 
-# Extract authors
-authors = soup.find_all("small", class_="author")
 
-author_list = [author.text for author in authors]
+# Mc-Culloch Pitts Neuron Model
 
-# Count frequency
-author_count = {}
-for author in author_list:
-    author_count[author] = author_count.get(author, 0) + 1
+def mcp_neuron(inputs, weights, threshold):
+    summation = sum(i * w for i, w in zip(inputs, weights))
+    if summation >= threshold:
+        return 1
+    else:
+        return 0
 
-# Prepare data
-names = list(author_count.keys())
-counts = list(author_count.values())
+# AND Gate
+print("AND Gate")
+for x1 in [0, 1]:
+    for x2 in [0, 1]:
+        output = mcp_neuron([x1, x2], [1, 1], 2)
+        print(x1, x2, "->", output)
 
-# Plot graph
-plt.figure()
-plt.bar(names, counts)
+# OR Gate
+print("\nOR Gate")
+for x1 in [0, 1]:
+    for x2 in [0, 1]:
+        output = mcp_neuron([x1, x2], [1, 1], 1)
+        print(x1, x2, "->", output)
 
-plt.title("Quotes per Author")
-plt.xlabel("Authors")
-plt.ylabel("Number of Quotes")
+# NOT Gate
+print("\nNOT Gate")
+for x in [0, 1]:
+    output = mcp_neuron([x], [-1], 0)
+    print(x, "->", output)
 
-plt.xticks(rotation=45)
-plt.tight_layout()
+Conclusion
 
-plt.show()
-
-Conclusion (Short)
-
-Data was successfully collected using web scraping. The requests library fetched the webpage and BeautifulSoup parsed and extracted useful information. This method is useful in social media analytics for sentiment analysis and trend detection.
+The Mc-Culloch Pitts model successfully implements basic logic gates using weighted inputs and threshold values. It demonstrates how simple neurons can perform logical operations, forming the foundation of neural networks.
