@@ -13,31 +13,46 @@ output signal yout is 1 if the input ysum is greater than or equal to a given th
 
 
 CODE:
+# Mc-Culloch Pitts Model for AND and OR Gates
+
 import numpy as np
-np.random.seed(seed=0)
-# generate random vector I, sampling from {0,1}
-I = np.random.choice([0, 1], 3)
-# generate random vector W, sampling from {-1,1}
-W = np.random.choice([-1, 1], 3)
-print(f'Input vector: {I}, Weight vector: {W}')
-# matrix of inputs
+
+# Threshold activation function
+def linear_threshold_gate(dot, T):
+    if dot >= T:
+        return 1
+    else:
+        return 0
+
+# Input combinations
 input_table = np.array([
-[0, 0], # both no
-[0, 1], # one no, one yes
-[1, 0], # one yes, one no
-[1, 1] # both yes
-])print(f'Input table:\n{input_table}')
-dot = I @ W
-print(f'Dot product: {dot}')
-def linear_threshold_gate(dot: int, T: float) -> int:
-"""Returns the binary threshold output"""
-if dot >= T:
-return 1
-else:
-return 0
-T=1
-activation = linear_threshold_gate(dot, T)
-print(f'Activation: {activation}')
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+])
+
+print("Input Table:\n", input_table)
+
+# -------- AND Gate --------
+print("\nAND Gate:")
+weights_and = np.array([1, 1])
+threshold_and = 2
+
+for row in input_table:
+    dot = np.dot(row, weights_and)
+    output = linear_threshold_gate(dot, threshold_and)
+    print(f"Input: {row}, Dot Product: {dot}, Activation: {output}")
+
+# -------- OR Gate --------
+print("\nOR Gate:")
+weights_or = np.array([1, 1])
+threshold_or = 1
+
+for row in input_table:
+    dot = np.dot(row, weights_or)
+    output = linear_threshold_gate(dot, threshold_or)
+    print(f"Input: {row}, Dot Product: {dot}, Activation: {output}")
 
 
 CONCLUSION:
